@@ -21,9 +21,12 @@ class EmailSender:
     rcptlist = ['srinivassriram06@gmail.com', 'arjunsikka05@gmail.com', 'kr.reddy.kaushik@gmail.com', 'adityaanand.muz@gmail.com', 'ssriram.78@gmail.com', 'abhisar.muz@gmail.com', 'raja.muz@gmail.com']
     
     @classmethod
-    def send_email(cls, temp_file, image_name):
+    def send_email(cls, temp_file, image, name):
         """
-        
+        1.defines the receivers as all the email address give above
+        2.the msg sets the paremeter for the subject, from, and to in the email
+        3.adds text with the picture of the speeding car
+        4.makes sure that the email was sent
         """
         logger().debug("Sending Email")
         receivers = ','.join(cls.rcptlist)
