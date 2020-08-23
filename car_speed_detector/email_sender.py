@@ -4,6 +4,9 @@ import smtplib
 # And imghdr to find the types of our images
 import imghdr
 
+# Import pandas for making the exel file
+import pandas as pd
+
 # Here are the email package modules we'll need
 from email.message import EmailMessage
 
@@ -13,6 +16,7 @@ from email.mime.application import MIMEApplication
 import email.mime.image
 import os
 from car_speed_logging import logger
+from speed_validator import *
 
 class EmailSender:
     # TODO make this as a CLI configurable param. 
@@ -28,6 +32,9 @@ class EmailSender:
         3.adds text with the picture of the speeding car
         4.makes sure that the email was sent
         """
+        Dataframe = pd.Dataframe(speed_dataframe)
+        Dataframe.to_excel("speedExcel.xls")
+        
         logger().debug("Sending Email")
         receivers = ','.join(cls.rcptlist)
 
@@ -45,6 +52,14 @@ class EmailSender:
             jpgpart = email.mime.image.MIMEImage(fp.read())
             jpgpart.add_header('Content-Disposition', 'attachment', filename=image_name)
             msg.attach(jpgpart)
+            
+        fp = open('tmp/'+speedExcel 'rb')
+        xls = MIMEBase('application','vnd.ms-excel')
+        xls.set_payload(fp.read())
+        fp.close()
+        encoders.encode_base64(xls)
+        xls.add_header('Excel file of Speeding cars', 'attachment', filename=speedExcel)
+        msg.attach(xls)
 
         client = smtplib.SMTP('smtp.gmail.com', 587)
         client.starttls()
