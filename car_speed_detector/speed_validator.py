@@ -10,6 +10,7 @@ from datetime import datetime
 
 class SpeedValidator:
     log_file = None
+    speed_dataframe = {"Date":[], "Time":[], "Speed:[]"}
     
     @classmethod
     def close_log_file(cls):
@@ -63,14 +64,30 @@ class SpeedValidator:
                     t = Thread(target=EmailSender.send_email, args=(tempFile,imageID,))
                     t.start()
 
-                    # log the event in the log file
+                    # log the event in the log file and dataframe
                     info = "{},{},{},{},{},{}\n".format(year, month,
                                                         day, time, trackable_object.speedMPH, imageID)
+                    # Open the date list and append the date to it. Do the same with the others
+                    Dvalue = speed_Dataframe["Date"]
+                    Dvalue.append("{},{},{}".format(year, month, day))
+                    Tvalue = speed_Dataframe["Time"]
+                    Tvalue.append("{}".format(time))
+                    Svalue = speed_Dataframe["Speed"]
+                    Svalue.append("{}".format(trackable_object.speedMPH))
+                
                 else:
-                    # log the event in the log file
+                    # log the event in the log file and dataframe
                     info = "{},{},{},{},{}\n".format(year, month,
                                                      day, time, trackable_object.speedMPH)
                 cls.log_file.write(info)
+                
+                # Open the date list and append the date to it. Do the same with the others
+                    Dvalue = speed_Dataframe["Date"]
+                    Dvalue.append("{},{},{}".format(year, month, day))
+                    Tvalue = speed_Dataframe["Time"]
+                    Tvalue.append("{}".format(time))
+                    Svalue = speed_Dataframe["Speed"]
+                    Svalue.append("{}".format(trackable_object.speedMPH))
 
                 # set the object has logged
                 trackable_object.logged = True
